@@ -6,22 +6,19 @@ from pyspark import SparkContext
 from csv import reader
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: task1 <file> <file>", file=sys.stderr)
-        exit(-1)
     sc = SparkContext()
     csvfile = sc.textFile('data/yellow_tripdata_2016-01.csv,data/yellow_tripdata_2016-02.csv,data/yellow_tripdata_2016-03.csv,data/yellow_tripdata_2016-04.csv,data/yellow_tripdata_2016-05.csv,data/yellow_tripdata_2016-06.csv')
 	
-	header = csvfile.first()
+    header = csvfile.first()
 
-	csvfile = csvfile.filter(lambda line : line != header)
+    csvfile = csvfile.filter(lambda line : line != header)
 
     taxi_data = csvfile.mapPartitions(lambda x: reader(x))
 	
-	rateCodeID = taxi_data.map(lambda entry: (entry[7],1)).reduceByKey(lambda x,y: x+y)
+    rateCodeID = taxi_data.map(lambda entry: (entry[7],1)).reduceByKey(lambda x,y: x+y)
 	
-	tabSeparated =  rateCodeID.map(lambda x: x[0]+"\t"+str(x[1])) 
+    tabSeparated =  rateCodeID.map(lambda x: x[0]+"\t"+str(x[1])) 
     rateCodeID.saveAsTextFile("rateCodeId.out")
 	
-	sc.stop()
+    sc.stop()
 	
