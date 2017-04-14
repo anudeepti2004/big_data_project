@@ -4,16 +4,11 @@ import sys
 from operator import add
 from pyspark import SparkContext
 from csv import reader
+from myUtils import readFiles
 
 if __name__ == "__main__":
         sc = SparkContext()
-        csvfile = sc.textFile('data/yellow_tripdata_2016-01.csv,data/yellow_tripdata_2016-02.csv,data/yellow_tripdata_2016-03.csv,data/yellow_tripdata_2016-04.csv,data/yellow_tripdata_2016-05.csv,data/yellow_tripdata_2016-06.csv')
-
-        header = csvfile.first()
-
-        csvfile = csvfile.filter(lambda line : line != header)
-
-        taxi_data = csvfile.mapPartitions(lambda x: reader(x))
+        (taxi_data,prefix) = readFiles(['data/yellow_tripdata_2016-01.csv','data/yellow_tripdata_2016-02.csv','data/yellow_tripdata_2016-03.csv','data/yellow_tripdata_2016-04.csv','data/yellow_tripdata_2016-05.csv','data/yellow_tripdata_2016-06.csv'] )
 
         vendorID = taxi_data.map(lambda entry: (entry[0],1)).reduceByKey(lambda x,y: x+y)
 
