@@ -8,10 +8,10 @@ from csv import reader
 def readFiles (files,sc):
     concatenatedFiles = ','.join(files)
     
-        csvfile = sc.textFile(concatenatedFiles)
+    csvfile = sc.textFile(concatenatedFiles)
     header = csvfile.first()
 
-        csvfile = csvfile.filter(lambda line : line != header)
+    csvfile = csvfile.filter(lambda line : line != header)
     
     taxi_data = csvfile.mapPartitions(lambda x: reader(x))
     if "yellow" in concatenatedFiles:
