@@ -6,18 +6,18 @@ from pyspark import SparkContext
 from csv import reader
 
 def readFiles (files,sc):
-	concatenatedFiles = ','.join(files)
-	
-    	csvfile = sc.textFile(concatenatedFiles)
-	header = csvfile.first()
+    concatenatedFiles = ','.join(files)
+    
+        csvfile = sc.textFile(concatenatedFiles)
+    header = csvfile.first()
 
-    	csvfile = csvfile.filter(lambda line : line != header)
-	
-	taxi_data = csvfile.mapPartitions(lambda x: reader(x))
-	if "yellow" in concatenatedFiles:
-		return (taxi_data,"yellow")
-	else:
-		return (taxi_data,"green")
+        csvfile = csvfile.filter(lambda line : line != header)
+    
+    taxi_data = csvfile.mapPartitions(lambda x: reader(x))
+    if "yellow" in concatenatedFiles:
+        return (taxi_data,"yellow")
+    else:
+        return (taxi_data,"green")
     
 OUR_DATABASE_PATH = '/user/dv697/data/yellow_tripdata_'
 def getAllFileNames():
