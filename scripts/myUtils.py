@@ -18,3 +18,16 @@ def readFiles (files,sc):
 		return (taxi_data,"yellow")
 	else:
 		return (taxi_data,"green")
+    
+OUR_DATABASE_PATH = '/user/dv697/data/yellow_tripdata_'
+def getAllFileNames():
+    y_m_dic = {y:[k for k in range(1,13)] for y in range(2013,2017)}
+    return getSomeFileNames(y_m_dic)
+
+def getSomeFileNames(year_months_dic):
+    basePath = OUR_DATABASE_PATH
+    file_names = []
+    for y,m_array in year_months_dic.items():
+        for m in m_array:
+            file_names.append(basePath + '%d-%02d.csv' %(y,m))
+    return file_names

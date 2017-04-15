@@ -8,7 +8,8 @@ from myUtils import readFiles
 
 if __name__ == "__main__":
 	sc = SparkContext()
-	(taxi_data,prefix) = readFiles(['data/yellow_tripdata_2016-01.csv','data/yellow_tripdata_2016-02.csv','data/yellow_tripdata_2016-03.csv','data/yellow_tripdata_2016-04.csv','data/yellow_tripdata_2016-05.csv','data/yellow_tripdata_2016-06.csv'],sc )
+    fileNames = getSomeFileNames({2016:range(1,7)})
+	(taxi_data,prefix) = readFiles(fileNames,sc )
 	def checkValid(mta_tax):
 		try:
 			num = float(mta_tax)
