@@ -38,11 +38,13 @@ class coordinateMapper(object):
         import matplotlib.path as mplPath
         import numpy as np
         self.all_poly=pickle.load(open(path,'rb'))
-
+        print(self.all_poly[15])
+        
     def convert(self,xy):
         #xy is a tuple(x,y)
         for i,poly in self.all_poly:
             if poly.contains_point(xy):
+                print('yes')
                 return i
         
 def getConverterFunc():
