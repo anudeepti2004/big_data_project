@@ -4,7 +4,7 @@ import sys
 from operator import add
 from pyspark import SparkContext
 from csv import reader
-from myUtils import readFiles
+from myUtils import readFiles,getSomeFileNames
 
 if __name__ == "__main__":
 	sc = SparkContext()
