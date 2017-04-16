@@ -24,7 +24,7 @@ if __name__ == "__main__":
 	field = taxi_data.map(lambda entry: (checkValid(entry[17]),1)).reduceByKey(lambda x,y: x+y)
 	
 	tabSeparated =  field.map(lambda x: x[0]+"\t"+str(x[1])) 
-    	tabSeparated.saveAsTextFile("tolls.out")
+    	tabSeparated.saveAsTextFile(sys.argv[0].split('.')[0] + "_valid.out")
 	
 	sc.stop()
 	

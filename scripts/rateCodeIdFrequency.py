@@ -17,7 +17,7 @@ if __name__ == "__main__":
 	rateCodeID = taxi_data.map(lambda entry: (entry[7],1)).reduceByKey(lambda x,y: x+y)
 	
 	tabSeparated =  rateCodeID.map(lambda x: x[0]+"\t"+str(x[1])) 
-    	tabSeparated.saveAsTextFile("rateCodeId.out")
+    	tabSeparated.saveAsTextFile(sys.argv[0].split('.')[0] + "_valid.out")
 	
 	sc.stop()
 	

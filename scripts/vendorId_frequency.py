@@ -13,7 +13,7 @@ if __name__ == "__main__":
 	vendorID = taxi_data.map(lambda entry: (entry[0],1)).reduceByKey(lambda x,y: x+y)
 	
 	tabSeparated =  vendorID.map(lambda x: x[0]+"\t"+str(x[1])) 
-    	tabSeparated.saveAsTextFile("vendorId.out")
+    	tabSeparated.saveAsTextFile(sys.argv[0].split('.')[0] + "_valid.out")
 	
 	sc.stop()
 	

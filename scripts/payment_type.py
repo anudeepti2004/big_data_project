@@ -22,7 +22,7 @@ if __name__ == "__main__":
 	field = taxi_data.map(lambda entry: (checkValid(entry[11]),1)).reduceByKey(lambda x,y: x+y)
 	
 	tabSeparated =  field.map(lambda x: x[0]+"\t"+str(x[1])) 
-    	tabSeparated.saveAsTextFile("payment_type_valid.out")
+    	tabSeparated.saveAsTextFile(sys.argv[0].split('.')[0] + "_valid.out")
 	
 	sc.stop()
 	
