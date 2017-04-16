@@ -4,15 +4,30 @@ import sys
 from operator import add
 from csv import reader
 
+def readFiles (files,sc):
+    concatenatedFiles = ','.join(files)
+    
+    csvfile = sc.textFile(concatenatedFiles)
+    header = csvfile.first()
+
+    csvfile = csvfile.filter(lambda line : line != header)
+    # taxi_data.map(lambda t: map(float,t[5:7]))
+    
+    taxi_data = csvfile.mapPartitions(lambda x: reader(x))
+    if "yellow" in concatenatedFiles:
+        return (taxi_data,"yellow")
+    else:
+        return (taxi_data,"green")
+    
+OUR_DATABASE_PATH = '/user/dv697/data/yellow_tripdata_'
 def readAllFiles (sc):
     cy_m_dic = dict((y, [k for k in range(1,13)]) for y in range(2013,2017))
-    return readFiles(y_m_dic,sc)
+    return readFiles2(y_m_dic,sc)
 
 OUR_DATABASE_PATH = '/user/dv697/data/yellow_tripdata_'
 
-def readFiles (year_months_dic,sc):
+def readFiles2 (year_months_dic,sc):
     basePath = OUR_DATABASE_PATH
-    concatenatedFiles = ','.join(files)
     new_type = []
     old_type = []
     for y,m_array in year_months_dic.items():
@@ -51,7 +66,6 @@ def readFiles (year_months_dic,sc):
     else:
         return (taxi_data,"green")
 
-    
 def getAllFileNames():
     y_m_dic = dict((y, [k for k in range(1,13)]) for y in range(2013,2017))
     return getSomeFileNames(y_m_dic)
