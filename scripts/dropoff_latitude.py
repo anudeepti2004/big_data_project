@@ -20,9 +20,9 @@ if __name__ == "__main__":
 	        return "Invalid_NotFloat"
 
 	lat = (40.477399,40.917577)  
-    field = taxi_data.map(lambda entry: (checkValid(entry[6],lat),1)).reduceByKey(lambda x,y: x+y)
+    field = taxi_data.map(lambda entry: (checkValid(entry[10],lat),1)).reduceByKey(lambda x,y: x+y)
     
     tabSeparated =  field.map(lambda x: x[0]+"\t"+str(x[1])) 
-    tabSeparated.saveAsTextFile("mta_info.out")
+    tabSeparated.saveAsTextFile("dropoff_lat.out")
     
     sc.stop()

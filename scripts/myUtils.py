@@ -50,3 +50,13 @@ class coordinateMapper(object):
 def getConverterFunc():
     mapper = coordinateMapper()
     return lambda t: mapper.convert(t)
+
+def checkValid(f,range):
+	    try:
+	        ff = float(f)
+	        if  range[1] >f > range[0]:
+	            return "Valid"
+	        else:
+	            return "Invalid_NotNYC"
+	    except ValueError:
+	        return "Invalid_NotFloat"
