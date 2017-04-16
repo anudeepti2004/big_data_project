@@ -22,9 +22,9 @@ if __name__ == "__main__":
             return "Invalid_NotFloat"
 
     lon = (-74.259090,-73.700272)    
-    field = taxi_data.map(lambda entry: (checkValid(entry[9],lon),1)).reduceByKey(lambda x,y: x+y)
+    field = taxi_data.map(lambda entry: (checkValid(entry[5],lon),1)).reduceByKey(lambda x,y: x+y)
     
     tabSeparated =  field.map(lambda x: x[0]+"\t"+str(x[1])) 
-    tabSeparated.saveAsTextFile("dropoff_lon.out")
+    tabSeparated.saveAsTextFile("pickup_lon.out")
     
     sc.stop()
