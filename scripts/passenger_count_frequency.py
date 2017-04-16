@@ -18,7 +18,7 @@ if __name__ == "__main__":
 	passenger_count = taxi_data.map(lambda entry: (entry[3],1)).reduceByKey(lambda x,y: x+y)
 	
 	tabSeparated =  passenger_count.map(lambda x: x[0]+"\t"+str(x[1])) 
-    	tabSeparated.saveAsTextFile("passenger_count.out")
+    	tabSeparated.saveAsTextFile(sys.argv[0].split('.')[0] + "_valid.out")
 	
 	sc.stop()
 	
