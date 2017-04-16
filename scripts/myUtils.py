@@ -4,11 +4,14 @@ import sys
 from operator import add
 from csv import reader
 
+
+# d = getFieldDic() and then you can call d[4] and it returns 'trip_distance' OR the other way around d['trip_distance']=4.
+_fields = ['VendorID', 'tpep_pickup_datetime', 'tpep_dropoff_datetime', 'passenger_count', 'trip_distance', 'pickup_longitude', 'pickup_latitude', 'RatecodeID', 'store_and_fwd_flag', 'dropoff_longitude', 'dropoff_latitude', 'payment_type', 'fare_amount', 'extra', 'mta_tax', 'tip_amount', 'tolls_amount', 'improvement_surcharge', 'total_amount']
+_fieldsDic = {_fields[i]:i for i in range(len(_fields))}
+_fieldsDic.update({i:_fields[i] for i in range(len(_fields))})
+
 def getFieldDic():
-    a = ['VendorID', 'tpep_pickup_datetime', 'tpep_dropoff_datetime', 'passenger_count', 'trip_distance', 'pickup_longitude', 'pickup_latitude', 'RatecodeID', 'store_and_fwd_flag', 'dropoff_longitude', 'dropoff_latitude', 'payment_type', 'fare_amount', 'extra', 'mta_tax', 'tip_amount', 'tolls_amount', 'improvement_surcharge', 'total_amount']
-    d = {a[i]:i for i in range(len(a))}
-    d.update({i:a[i] for i in range(len(a))})
-    return d 
+    return _fieldsDic
 
 def readFiles (files,sc):
     concatenatedFiles = ','.join(files)
@@ -29,8 +32,6 @@ OUR_DATABASE_PATH = '/user/dv697/data/yellow_tripdata_'
 def readAllFiles (sc):
     cy_m_dic = dict((y, [k for k in range(1,13)]) for y in range(2013,2017))
     return readFiles2(y_m_dic,sc)
-
-OUR_DATABASE_PATH = '/user/dv697/data/yellow_tripdata_'
 
 def readFiles2 (year_months_dic,sc):
     basePath = OUR_DATABASE_PATH
@@ -64,8 +65,16 @@ def readFiles2 (year_months_dic,sc):
     
     ## Assign GPS coordinates to each place
     taxi_data2 = csvfile2.mapPartitions(lambda x: reader(x)).map(lambda a: a[:5] + [0.0, 0.0] + a[5:7] + [0.0, 0.0] + a[9:])
-
     taxi_data.union(taxi_data2)
+
+    ## Convert VendorID
+    def convertVendorInt(x):
+        i = _fieldsDic['VendorID']
+        if x[i] == 'CMT': x[i]=1
+        elif x[i] == 'VTS': x[i]=0
+        return x
+
+    taxi_data.map(convertVendorInt)
 
     if "yellow" in oldTypeFiles + newTypeFiles:
         return (taxi_data,"yellow")

@@ -138,4 +138,40 @@ def checkAmountValid(amount):
                 else:
                         return "Invalid_Null"
 
+def checkLongitude(f):
+    r = (-74.259090,-73.700272)   
+    try:
+        ff = float(f)
+        if ff > 180 or ff < -180:
+            return "Invalid"
+        elif  r[1] >ff> r[0]:
+            return "Valid"
+        else:
+            return "Invalid_NotNYC"
+    except ValueError:
+        return "Invalid_NotFloat"
 
+
+def checkLatitude(f):
+    r = (40.477399,40.917577)  
+    try:
+        ff = float(f)
+        if ff > 90 or ff < -90:
+            return "Invalid"
+        elif  r[1] >ff> r[0]:
+            return "Valid"
+        else:
+            return "Outlier_NotNYC"
+    except ValueError:
+        return "Invalid_NotFloat"
+
+def getAllValidationFunctions():
+    #['VendorID', 'tpep_pickup_datetime', 'tpep_dropoff_datetime', 'passenger_count', 'trip_distance', 'pickup_longitude', 'pickup_latitude', 'RatecodeID', 'store_and_fwd_flag', 'dropoff_longitude', 'dropoff_latitude', 'payment_type', 'fare_amount', 'extra', 'mta_tax', 'tip_amount', 'tolls_amount', 'improvement_surcharge', 'total_amount']
+    d = {}
+    d['pickup_longitude'] = checkLongitude
+    d['pickup_latitude'] = checkLatitude
+    d['dropoff_longitude'] = checkLongitude
+    d['dropoff_latitude'] = checkLatitude
+
+    return d
+    
