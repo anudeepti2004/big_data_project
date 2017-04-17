@@ -58,7 +58,7 @@ payment_type_out = payment.map(lambda x: x[0]+"\t"+str(x[1]))
 payment_type_out.saveAsTextFile("payment_type_valid.out")
 
 # MTA tax
-mta_tax = taxi_data.map(lambda entry: (checkMtaTaxValid(entry[fields['payment_type']]),1)).reduceByKey(lambda x,y: x+y)
+mta_tax = taxi_data.map(lambda entry: (checkMtaTaxValid(entry[fields['mta_tax']]),1)).reduceByKey(lambda x,y: x+y)
 mta_tax_out = mta_tax.map(lambda x: x[0]+"\t"+str(x[1]))
 mta_tax_out.saveAsTextFile("mta_tax_valid.out")
 
