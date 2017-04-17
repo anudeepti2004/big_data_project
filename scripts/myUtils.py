@@ -101,7 +101,7 @@ def readFiles2 (year_months_dic,sc):
 	if len(x) == 18: 
 		temp = x[i]
 		x[i] = 0
-		x[i] = temp
+		x[18] = temp
 	return x
 		 
     taxi_data = taxi_data.map(correctLengthOfFields)	
