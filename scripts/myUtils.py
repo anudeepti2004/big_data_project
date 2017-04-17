@@ -49,25 +49,36 @@ def readFiles2 (year_months_dic,sc):
     oldTypeFiles = ','.join(old_type)
     newTypeFiles = ','.join(new_type)
 
+    if oldTypeFiles:
+        csvfile = sc.textFile(oldTypeFiles)
+        header = csvfile.first()
 
-    csvfile = sc.textFile(oldTypeFiles)
-    header = csvfile.first()
-
-    csvfile = csvfile.filter(lambda line : line != header)
-    # taxi_data.map(lambda t: map(float,t[5:7]))
+        csvfile = csvfile.filter(lambda line : line != header)
+        # taxi_data.map(lambda t: map(float,t[5:7]))
     
-    taxi_data = csvfile.mapPartitions(lambda x: reader(x))
+        taxi_data = csvfile.mapPartitions(lambda x: reader(x))
+    else:
+        csvfile = sc.textFile(newTypeFiles)
+        header = csvfile.first()
 
-    csvfile2 = sc.textFile(newTypeFiles)
-    header2 = csvfile2.first()
-
-    csvfile2 = csvfile2.filter(lambda line : line != header2)
-    # taxi_data.map(lambda t: map(float,t[5:7]))
+        csvfile = csvfile.filter(lambda line : line != header)
+        # taxi_data.map(lambda t: map(float,t[5:7]))
     
-    ## Assign GPS coordinates to each place
-    zones_mean = pickle.load(open('scripts/zones_mean.pickle','r'))
-    taxi_data2 = csvfile2.mapPartitions(lambda x: reader(x)).map(lambda a: a[:5] + zones_mean[int(a[7])] + a[5:7] + zones_mean[int(a[8])] + a[9:])
-    taxi_data.union(taxi_data2)
+        taxi_data = csvfile.mapPartitions(lambda x: reader(x))
+        zones_mean = pickle.load(open('scripts/zones_mean.pickle','r'))
+        taxi_data = csvfile.mapPartitions(lambda x: reader(x)).map(lambda a: a[:5] + zones_mean[int(a[7])] + a[5:7] + zones_mean[int(a[8])] + a[9:])
+
+    if oldTypeFiles and newTypeFiles:
+        csvfile2 = sc.textFile(newTypeFiles)
+        header2 = csvfile2.first()
+
+        csvfile2 = csvfile2.filter(lambda line : line != header2)
+        # taxi_data.map(lambda t: map(float,t[5:7]))
+        
+        ## Assign GPS coordinates to each place
+        zones_mean = pickle.load(open('scripts/zones_mean.pickle','r'))
+        taxi_data2 = csvfile2.mapPartitions(lambda x: reader(x)).map(lambda a: a[:5] + zones_mean[int(a[7])] + a[5:7] + zones_mean[int(a[8])] + a[9:])
+        taxi_data.union(taxi_data2)
 
     ## Convert VendorID
     def convertVendorInt(x):
