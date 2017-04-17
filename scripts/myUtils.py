@@ -54,14 +54,14 @@ def readFiles2 (year_months_dic,sc):
         csvfile = csvfile.filter(lambda line : line != header)
         # taxi_data.map(lambda t: map(float,t[5:7]))
     
-        taxi_data = csvfile.mapPartitions(lambda x: reader(x))
+        taxi_data = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0)
     else:
         csvfile = sc.textFile(newTypeFiles)
         header = csvfile.first()
         csvfile = csvfile.filter(lambda line : line != header)
         # taxi_data.map(lambda t: map(float,t[5:7]))
     
-        taxi_data = csvfile.mapPartitions(lambda x: reader(x))
+        taxi_data = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0)
         zones_mean = pickle.load(open('zones_mean.pickle','r'))
         taxi_data = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0).map(lambda a: a[:5] + zones_mean[int(a[7])] + a[5:7] + zones_mean[int(a[8])] + a[9:])
 
@@ -97,10 +97,11 @@ def readFiles2 (year_months_dic,sc):
     taxi_data = taxi_data.map(convertVendorInt).map(convertPaymentTypeInt).filter(lambda x: len(x)!=0) # There are 1 empty array for each file. So lets remove them.   
     
     def correctLengthOfFields(x):
+	i = _fieldsDic['improvement_surcharge']
 	if len(x) == 18: 
-		temp = x['improvement_surcharge']
-		x['improvement_surcharge'] = 0
-		x['total_amount'] = temp
+		temp = x[i]
+		x[i] = 0
+		x[i] = temp
 	return x
 		 
     taxi_data = taxi_data.map(correctLengthOfFields)	
