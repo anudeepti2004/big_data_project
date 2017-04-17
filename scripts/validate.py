@@ -5,7 +5,7 @@ from csv import reader
 from operator import add
 from validation_utils import *
 from myUtils import *
-
+from pyspark import SparkContext
 '''
 {0: 'VendorID', 'VendorID': 0, 2: 'tpep_dropoff_datetime', 3: 'passenger_count', 4: 'trip_distance', 5: 'pickup_longitude', 6: 'pickup_latitude', 'extra': 13, 8: 'store_and_fwd_flag', 9: 'dropoff_longitude', 10: 'dropoff_latitude', 11: 'payment_type', 12: 'fare_amount', 13: 'extra', 14: 'mta_tax', 15: 'tip_amount', 16: 'tolls_amount', 17: 'improvement_surcharge', 18: 'total_amount', 'RatecodeID': 7, 'trip_distance': 4, 1: 'tpep_pickup_datetime', 7: 'RatecodeID', 'fare_amount': 12, 'pickup_longitude': 5, 'dropoff_latitude': 10, 'tolls_amount': 16, 'tip_amount': 15, 'mta_tax': 14, 'dropoff_longitude': 9, 'tpep_pickup_datetime': 1, 'tpep_dropoff_datetime': 2, 'improvement_surcharge': 17, 'total_amount': 18, 'passenger_count': 3, 'payment_type': 11, 'store_and_fwd_flag': 8, 'pickup_latitude': 6}
 '''
