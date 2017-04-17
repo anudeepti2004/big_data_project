@@ -84,10 +84,10 @@ def readFiles2 (year_months_dic,sc):
     def convertVendorInt(x):
         i = _fieldsDic['VendorID']
         if x[i] == 'CMT': x[i]=1
-        elif x[i] == 'VTS': x[i]=0
+        elif x[i] == 'VTS': x[i]=2
         return x
 
-    taxi_data.map(convertVendorInt).filter(lambda x: len(x)!=0) # There are 1 empty array for each file. So lets remove them.
+    taxi_data.map(convertVendorInt).filter(lambda x: len(x)!=0) # There are 1 empty array for each file. So lets remove them.   
 
     if "yellow" in oldTypeFiles + newTypeFiles:
         return (taxi_data,"yellow")

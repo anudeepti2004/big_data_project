@@ -11,9 +11,11 @@ from pyspark import SparkContext
 '''
 
 sc = SparkContext()
-fileNames = getAllFileNames()
+sc.addPyFile("myUtils.py")
+sc.addPyFile("validation_utils.py")
+
 fields = getFieldDic()
-(taxi_data,prefix) = readFiles(fileNames,sc )
+(taxi_data,prefix) = readAllFiles(sc)
 
 # VendorID
 vendorID = taxi_data.map(lambda entry: (checkVendorIDValid(entry[fields['VendorID']]),1)).reduceByKey(lambda x,y: x+y)
