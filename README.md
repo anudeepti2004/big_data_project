@@ -46,3 +46,5 @@ Command to get payment type frequency:
 `spark-submit payment_type_frequency.py`
 
 `hadoop fs -getmerge  payment_type_frequency.out payment_type_frequency.out`
+
+[This notebook](https://github.com/anudeepti2004/big_data_project/blob/master/shape%20conversion.ipynb) has the methods we used to create `zones.pickle` and `zones_mean.pickle` data. As explained in the report we decided to assign a fixed coordinates to every zone-id used for the data starting from July 2016. `zones_mean.pickle` has those mean coordinates. `zones.pickle` has the `matplotlib.Path` polygons for checking a point is whether inside the polygon or not. One can use the `myUtils.coordinateMapper` class to map the coordinate tuples to zone-id's.
