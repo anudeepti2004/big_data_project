@@ -48,11 +48,11 @@ def readFiles2 (year_months_dic,sc):
 
     oldTypeFiles = ','.join(old_type)
     newTypeFiles = ','.join(new_type)
-
+    print(oldTypeFiles,newTypeFiles)
     if oldTypeFiles:
         csvfile = sc.textFile(oldTypeFiles)
         header = csvfile.first()
-
+	print(header)
         csvfile = csvfile.filter(lambda line : line != header)
         # taxi_data.map(lambda t: map(float,t[5:7]))
     
@@ -60,7 +60,7 @@ def readFiles2 (year_months_dic,sc):
     else:
         csvfile = sc.textFile(newTypeFiles)
         header = csvfile.first()
-
+	print(header)
         csvfile = csvfile.filter(lambda line : line != header)
         # taxi_data.map(lambda t: map(float,t[5:7]))
     
@@ -71,7 +71,7 @@ def readFiles2 (year_months_dic,sc):
     if oldTypeFiles and newTypeFiles:
         csvfile2 = sc.textFile(newTypeFiles)
         header2 = csvfile2.first()
-
+	print(header2)
         csvfile2 = csvfile2.filter(lambda line : line != header2)
         # taxi_data.map(lambda t: map(float,t[5:7]))
         
