@@ -1,4 +1,4 @@
-NYC Taxis
+# NYC Taxi Cabs
 
 In this repository you will find a series of scripts designed to explore [NYC Taxi and Limousine data](http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml) (INSERT LINK) using pyspark.
 
