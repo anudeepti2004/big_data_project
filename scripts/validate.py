@@ -23,9 +23,9 @@ vendor_out = vendorID.map(lambda x: x[0]+"\t"+str(x[1]))
 vendor_out.saveAsTextFile("VendorID_valid.out")
 
 # Drop-off Time
-dropoff_time = taxi_data.map(lambda entry: (checkPickUpDateValid(entry[fields['tpep_dropiff_datetime']]),1)).reduceByKey(lambda x,y: x+y)
+dropoff_time = taxi_data.map(lambda entry: (checkPickUpDateValid(entry[fields['tpep_dropoff_datetime']]),1)).reduceByKey(lambda x,y: x+y)
 dropoff_time_out =  dropoff_time.map(lambda x: x[0]+"\t"+str(x[1]))
-dropoff_time_outg.saveAsTextFile("tpep_dropiff_datetime_valid.out")
+dropoff_time_out.saveAsTextFile("tpep_dropoff_datetime_valid.out")
 
 # Pick-up Time
 pickup_time = taxi_data.map(lambda entry: (checkDropoffDateValid(entry[fields['tpep_pickup_datetime']]),1)).reduceByKey(lambda x,y: x+y)
