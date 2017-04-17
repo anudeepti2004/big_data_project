@@ -92,9 +92,9 @@ def readFiles2 (year_months_dic,sc):
         i = _fieldsDic['payment_type']
         if x[i] == 'CRD': x[i]=1
         elif x[i] == 'CSH': x[i]=2
-		elif x[i] == 'NOC': x[i]=3
-		elif x[i] == 'DIS': x[i]=4
-		elif x[i] == 'UNK': x[i]=5
+	elif x[i] == 'NOC': x[i]=3
+	elif x[i] == 'DIS': x[i]=4
+	elif x[i] == 'UNK': x[i]=5
         return x
 		
     taxi_data = taxi_data.map(convertVendorInt).map(convertPaymentTypeInt).filter(lambda x: len(x)!=0) # There are 1 empty array for each file. So lets remove them.   
