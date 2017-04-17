@@ -51,14 +51,14 @@ def readFiles2 (year_months_dic,sc):
     if oldTypeFiles:
         csvfile = sc.textFile(oldTypeFiles)
         header = csvfile.first()
-        csvfile = csvfile.filter(lambda line : line != header)
+        csvfile = csvfile.filter(lambda line : line != header).filter(lambda line: 'endor' not in line)
         # taxi_data.map(lambda t: map(float,t[5:7]))
     
         taxi_data = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0)
     else:
         csvfile = sc.textFile(newTypeFiles)
         header = csvfile.first()
-        csvfile = csvfile.filter(lambda line : line != header)
+        csvfile = csvfile.filter(lambda line : line != header).filter(lambda line: 'endor' not in line)
         # taxi_data.map(lambda t: map(float,t[5:7]))
     
         taxi_data = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0)
@@ -68,7 +68,7 @@ def readFiles2 (year_months_dic,sc):
     if oldTypeFiles and newTypeFiles:
         csvfile2 = sc.textFile(newTypeFiles)
         header2 = csvfile2.first()
-        csvfile2 = csvfile2.filter(lambda line : line != header2)
+        csvfile2 = csvfile2.filter(lambda line : line != header2).filter(lambda line: 'endor' not in line)
         # taxi_data.map(lambda t: map(float,t[5:7]))
         
         ## Assign GPS coordinates to each place
@@ -101,7 +101,7 @@ def readFiles2 (year_months_dic,sc):
 	if len(x) == 18: 
 		temp = x[i]
 		x[i] = 0
-		x[18] = temp
+		x.append(temp)		
 	return x
 		 
     taxi_data = taxi_data.map(correctLengthOfFields)	
