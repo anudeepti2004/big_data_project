@@ -3,43 +3,44 @@ from __future__ import print_function
 import sys
 from operator import add
 from pyspark import SparkContext
+import datetime
 
 def checkVendorIDValid(vendor_id):
-	try:
-    	int(vendor_id)
-            if int(vendor_id) == 1 or int(vendor_id) == 2:
-            	return (vendor_id,"Valid")
-            else:
-            	return (vendor_id,"Invalid")
-	except ValueError:
+    try:
+        int(vendor_id)
+        if int(vendor_id) == 1 or int(vendor_id) == 2:
+            return (vendor_id,"Valid")
+        else:
+            return (vendor_id,"Invalid")
+    except ValueError:
         return (vendor_id,"Invalid")
 
 def checkPickUpDateValid(date_text):
-	if date_text is not None or date_text:
-    	try:
-    		given_date = datetime.datetime.strptime(date_text, '%Y-%m-%d %H:%M:%S')
-                    year = given_date.year
-                    if year >= 2013 and year <= 2016:
-                    	return "Valid"
-                    else:
-                        return "Invalid_year"
-            except ValueError:
-            	return "Invalid_date"
-	else:
+    if date_text is not None or date_text:
+        try:
+            given_date = datetime.datetime.strptime(date_text, '%Y-%m-%d %H:%M:%S')
+            year = given_date.year
+            if year >= 2013 and year <= 2016:
+                return "Valid"
+            else:
+                return "Invalid_year"
+        except ValueError:
+            return "Invalid_date"
+    else:
         return "Invalid_Null_date"
 
 def checkDropoffDateValid(date_text):
-	if date_text is not None:
-    	try:
-        	given_date = datetime.datetime.strptime(date_text, '%Y-%m-%d %H:%M:%S')
-                year = given_date.year
-                if year >= 2013 and year <= 2017:
-                	return "Valid"
-                else:
-                    return "Invalid_year"
+    if date_text is not None:
+        try:
+            given_date = datetime.datetime.strptime(date_text, '%Y-%m-%d %H:%M:%S')
+            year = given_date.year
+            if year >= 2013 and year <= 2017:
+                return "Valid"
+            else:
+                return "Invalid_year"
         except ValueError:
             return "Invalid_date"
-	else:
+    else:
         return "Invalid_Null_date"
 
 def checkPassengerCountValid(passenger_count):
@@ -111,7 +112,7 @@ def checkImprovementSurchargeValid(amount):
     if amount:
         try:
             num = float(amount)
-        	if  num ==  0.3:
+            if  num ==  0.3:
                 return "Valid"
             elif num == 0:
                 return "Valid_Zero_amount"
