@@ -172,6 +172,22 @@ def getAllValidationFunctions():
     d['pickup_latitude'] = checkLatitude
     d['dropoff_longitude'] = checkLongitude
     d['dropoff_latitude'] = checkLatitude
+    d['VendorID'] = checkVendorIDValid
+    d['tpep_pickup_datetime'] = checkPickUpDateValid
+    d['tpep_dropoff_datetime'] = checkDropoffDateValid
+    d['passenger_count'] = checkPassengerCountValid
+    d['trip_distance'] = checkTripDistanceValid
+    d['RatecodeID'] = checkRateCodeIdValid
+    d['store_and_fwd_flag'] = checkStoreAndFwdFlagValid
+    d['payment_type'] = checkPaymentTypeValid
+    d['fare_amount'] = checkAmountValid
+    d['extra'] =checkAmountValid
+    d['mta_tax'] = checkMtaTaxValid
+    d['tip_amount'] = checkAmountValid
+    d['tolls_amount'] = checkAmountValid
+    d['improvement_surcharge'] = checkImprovementSurchargeValid
+    d['total_amount'] = checkAmountValid
+
 
     return d
     
