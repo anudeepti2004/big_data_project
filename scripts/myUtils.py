@@ -3,6 +3,7 @@ from __future__ import print_function
 import sys
 from operator import add
 from csv import reader
+import pickle
 
 
 # d = getFieldDic() and then you can call d[4] and it returns 'trip_distance' OR the other way around d['trip_distance']=4.
@@ -64,7 +65,8 @@ def readFiles2 (year_months_dic,sc):
     # taxi_data.map(lambda t: map(float,t[5:7]))
     
     ## Assign GPS coordinates to each place
-    taxi_data2 = csvfile2.mapPartitions(lambda x: reader(x)).map(lambda a: a[:5] + [0.0, 0.0] + a[5:7] + [0.0, 0.0] + a[9:])
+    zones_mean = pickle.load(open('scripts/zones_mean.pickle','r'))
+    taxi_data2 = csvfile2.mapPartitions(lambda x: reader(x)).map(lambda a: a[:5] + zones_mean[int(a[7])] + a[5:7] + zones_mean[int(a[8])] + a[9:])
     taxi_data.union(taxi_data2)
 
     ## Convert VendorID
