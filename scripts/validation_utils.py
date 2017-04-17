@@ -23,10 +23,10 @@ def checkPickUpDateValid(date_text):
                         	return "Valid"
                         else:
                                 return "Invalid_year"
-                   except ValueError:
-                                return "Invalid_date"
-                else:
-                        return "Invalid_Null_date"
+                except ValueError:
+                	return "Invalid_date"
+	else:
+        	return "Invalid_Null_date"
 
 def checkDropoffDateValid(date_text):
 	if date_text is not None:
