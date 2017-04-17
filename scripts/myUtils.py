@@ -63,7 +63,7 @@ def readFiles2 (year_months_dic,sc):
     
         taxi_data = csvfile.mapPartitions(lambda x: reader(x))
         zones_mean = pickle.load(open('zones_mean.pickle','r'))
-        taxi_data = csvfile.mapPartitions(lambda x: reader(x)).map(lambda a: a[:5] + zones_mean[int(a[7])] + a[5:7] + zones_mean[int(a[8])] + a[9:])
+        taxi_data = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0).map(lambda a: a[:5] + zones_mean[int(a[7])] + a[5:7] + zones_mean[int(a[8])] + a[9:])
 
     if oldTypeFiles and newTypeFiles:
         csvfile2 = sc.textFile(newTypeFiles)
@@ -73,7 +73,7 @@ def readFiles2 (year_months_dic,sc):
         
         ## Assign GPS coordinates to each place
         zones_mean = pickle.load(open('zones_mean.pickle','r'))
-        taxi_data2 = csvfile2.mapPartitions(lambda x: reader(x)).map(lambda a: a[:5] + zones_mean[int(a[7])] + a[5:7] + zones_mean[int(a[8])] + a[9:])
+        taxi_data2 = csvfile2.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0).map(lambda a: a[:5] + zones_mean[int(a[7])] + a[5:7] + zones_mean[int(a[8])] + a[9:])
         taxi_data = taxi_data.union(taxi_data2)
 
     ## Convert VendorID
@@ -95,8 +95,15 @@ def readFiles2 (year_months_dic,sc):
         return x
 		
     taxi_data = taxi_data.map(convertVendorInt).map(convertPaymentTypeInt).filter(lambda x: len(x)!=0) # There are 1 empty array for each file. So lets remove them.   
->>>>>>> 6356b1f365ae1355e5cd5b06fbdc06f0b36ac5e1
-
+    
+    def correctLengthOfFields(x):
+	if len(x) == 18: 
+		temp = x['improvement_surcharge']
+		x['improvement_surcharge'] = 0
+		x['total_amount'] = temp
+	return x
+		 
+    taxi_data = taxi_data.map(correctLengthOfFields)	
     if "yellow" in oldTypeFiles + newTypeFiles:
         return (taxi_data,"yellow")
     else:
