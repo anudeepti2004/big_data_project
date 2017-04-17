@@ -78,7 +78,7 @@ def readFiles2 (year_months_dic,sc):
         ## Assign GPS coordinates to each place
         zones_mean = pickle.load(open('zones_mean.pickle','r'))
         taxi_data2 = csvfile2.mapPartitions(lambda x: reader(x)).map(lambda a: a[:5] + zones_mean[int(a[7])] + a[5:7] + zones_mean[int(a[8])] + a[9:])
-        taxi_data.union(taxi_data2)
+        taxi_data = taxi_data.union(taxi_data2)
 
     ## Convert VendorID
     def convertVendorInt(x):
@@ -87,7 +87,17 @@ def readFiles2 (year_months_dic,sc):
         elif x[i] == 'VTS': x[i]=2
         return x
 
-    taxi_data.map(convertVendorInt).filter(lambda x: len(x)!=0) # There are 1 empty array for each file. So lets remove them.   
+	## Convert Payment type
+    def convertPaymentTypeInt(x):
+        i = _fieldsDic['payment_type']
+        if x[i] == 'CRD': x[i]=1
+        elif x[i] == 'CSH': x[i]=2
+		elif x[i] == 'NOC': x[i]=3
+		elif x[i] == 'DIS': x[i]=4
+		elif x[i] == 'UNK': x[i]=5
+        return x
+		
+    taxi_data = taxi_data.map(convertVendorInt).map(convertPaymentTypeInt).filter(lambda x: len(x)!=0) # There are 1 empty array for each file. So lets remove them.   
 
     if "yellow" in oldTypeFiles + newTypeFiles:
         return (taxi_data,"yellow")
