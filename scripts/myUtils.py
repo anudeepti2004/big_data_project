@@ -31,7 +31,7 @@ def readFiles (files,sc):
     
 OUR_DATABASE_PATH = '/user/dv697/data/yellow_tripdata_'
 def readAllFiles (sc):
-    cy_m_dic = dict((y, [k for k in range(1,13)]) for y in range(2013,2017))
+    y_m_dic = dict((y, [k for k in range(1,13)]) for y in range(2013,2017))
     return readFiles2(y_m_dic,sc)
 
 def readFiles2 (year_months_dic,sc):
