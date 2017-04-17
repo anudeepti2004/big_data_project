@@ -3,6 +3,7 @@ from __future__ import print_function
 import sys
 from operator import add
 from pyspark import SparkContext
+import datetime
 
 def checkVendorIDValid(vendor_id):
 	try:
