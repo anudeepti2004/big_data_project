@@ -8,34 +8,34 @@ Command to run bash script: `sh submit_job.sh`
 
 
 Command to run outliers detection: 
-spark-submit outlier_detection.py
+`spark-submit outlier_detection.py`
 
 To get the files:
-hadoop fs -getmerge  total_amount_valid_including_outlier.out total_amount_valid_including_outlier.out
+`hadoop fs -getmerge  total_amount_valid_including_outlier.out total_amount_valid_including_outlier.out`
 
-hadoop fs -getmerge  trip_distance_valid_including_outlier.out trip_distance_valid_including_outlier.out
+`hadoop fs -getmerge  trip_distance_valid_including_outlier.out trip_distance_valid_including_outlier.out`
 
 
 
 Command to run to get the number of trips a day:
-spark-submit pickup_date_frequency.py
+`spark-submit pickup_date_frequency.py`
 
 To get the output files:
-hadoop fs -getmerge  pickup_date_frequency.out pickup_date_frequency.out
+`hadoop fs -getmerge  pickup_date_frequency.out pickup_date_frequency.out`
 
 
 Command to run to get total amount per date:
-spark-submit total_amount_per_date_frequency.py
+`spark-submit total_amount_per_date_frequency.py`
 
-hadoop fs -getmerge  total_amount_per_date_frequency.out total_amount_per_date_frequency.out
+`hadoop fs -getmerge  total_amount_per_date_frequency.out total_amount_per_date_frequency.out`
 
 Command to run to get total fare amount per date:
-spark-submit fare_amount_per_date_frequency.py
+`spark-submit fare_amount_per_date_frequency.py`
 
-hadoop fs -getmerge  fare_amount_valid_report.out fare_amount_valid_report.out
+`hadoop fs -getmerge  fare_amount_valid_report.out fare_amount_valid_report.out`
 
 
 Command to get payment type frequency:
-spark-submit payment_type_frequency.py
+`spark-submit payment_type_frequency.py`
 
-hadoop fs -getmerge  payment_type_frequency.out payment_type_frequency.out
+`hadoop fs -getmerge  payment_type_frequency.out payment_type_frequency.out`
