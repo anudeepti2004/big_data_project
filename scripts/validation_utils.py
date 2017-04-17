@@ -116,7 +116,7 @@ def checkImprovementSurchargeValid(amount):
             elif num == 0:
                 return "Valid_Zero_amount"
             else:
-                return "Invalid_Negative_amount"
+                return "Invalid_amount"
 
         except ValueError:
             return "Invalid_NotFloat"
