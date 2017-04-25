@@ -78,7 +78,7 @@ def readFiles2 (year_months_dic,sc):
         # taxi_data.map(lambda t: map(float,t[5:7]))
         
         ## Assign GPS coordinates to each place
-        taxi_data = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0).map(lambda a: a[:5] + getCoord(int(a[7])) + a[5:7] + getCoord(int(a[8])) + a[9:])
+        taxi_data2 = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0).map(lambda a: a[:5] + getCoord(int(a[7])) + a[5:7] + getCoord(int(a[8])) + a[9:])
         taxi_data = taxi_data.union(taxi_data2)
 
     ## Convert VendorID
