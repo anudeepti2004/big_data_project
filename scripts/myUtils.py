@@ -102,12 +102,12 @@ def readFiles2 (year_months_dic,sc):
     taxi_data = taxi_data.map(convertVendorInt).map(convertPaymentTypeInt).filter(lambda x: len(x)!=0) # There are 1 empty array for each file. So lets remove them.   
     
     def correctLengthOfFields(x):
-    i = _fieldsDic['improvement_surcharge']
-    if len(x) == 18: 
-        temp = x[i]
-        x[i] = 0
-        x.append(temp)      
-    return x
+        i = _fieldsDic['improvement_surcharge']
+        if len(x) == 18: 
+            temp = x[i]
+            x[i] = 0
+            x.append(temp)      
+        return x
          
     taxi_data = taxi_data.map(correctLengthOfFields)    
     if "yellow" in oldTypeFiles + newTypeFiles:
@@ -147,11 +147,11 @@ def getConverterFunc():
     return lambda t: mapper.convert(t)
 
 def checkValid(f,range):
-        try:
-            ff = float(f)
-            if  range[1] >f > range[0]:
-                return "Valid"
-            else:
-                return "Invalid_NotNYC"
-        except ValueError:
-            return "Invalid_NotFloat"
+    try:
+        ff = float(f)
+        if  range[1] >f > range[0]:
+            return "Valid"
+        else:
+            return "Invalid_NotNYC"
+    except ValueError:
+        return "Invalid_NotFloat"
