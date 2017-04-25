@@ -15,7 +15,7 @@ sc.addPyFile("myUtils.py")
 sc.addPyFile("validation_utils.py")
 
 fields = getFieldDic()
-(taxi_data,prefix) = readAllFiles(sc)
+(taxi_data,prefix) = readFiles2({2016:range(1,7),2015:range(1,13),2014:range(1,13),2013:range(1,13)},sc)  #readAllFiles(sc)
 
 # VendorID
 vendorID = taxi_data.map(lambda entry: (checkVendorIDValid(entry[fields['VendorID']]),1)).reduceByKey(lambda x,y: x+y)
@@ -58,7 +58,7 @@ payment_type_out = payment.map(lambda x: x[0]+"\t"+str(x[1]))
 payment_type_out.saveAsTextFile("payment_type_valid.out")
 
 # MTA tax
-mta_tax = taxi_data.map(lambda entry: (checkMtaTaxValid(entry[fields['payment_type']]),1)).reduceByKey(lambda x,y: x+y)
+mta_tax = taxi_data.map(lambda entry: (checkMtaTaxValid(entry[fields['mta_tax']]),1)).reduceByKey(lambda x,y: x+y)
 mta_tax_out = mta_tax.map(lambda x: x[0]+"\t"+str(x[1]))
 mta_tax_out.saveAsTextFile("mta_tax_valid.out")
 

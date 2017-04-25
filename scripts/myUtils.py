@@ -51,29 +51,29 @@ def readFiles2 (year_months_dic,sc):
     if oldTypeFiles:
         csvfile = sc.textFile(oldTypeFiles)
         header = csvfile.first()
-        csvfile = csvfile.filter(lambda line : line != header)
+        csvfile = csvfile.filter(lambda line : line != header).filter(lambda line: 'endor' not in line)
         # taxi_data.map(lambda t: map(float,t[5:7]))
     
-        taxi_data = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x)!=0)
+        taxi_data = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0)
     else:
         csvfile = sc.textFile(newTypeFiles)
         header = csvfile.first()
-        csvfile = csvfile.filter(lambda line : line != header)
+        csvfile = csvfile.filter(lambda line : line != header).filter(lambda line: 'endor' not in line)
         # taxi_data.map(lambda t: map(float,t[5:7]))
     
-        taxi_data = csvfile.mapPartitions(lambda x: reader(x))
+        taxi_data = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0)
         zones_mean = pickle.load(open('zones_mean.pickle','r'))
-        taxi_data = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x)!=0).map(lambda a: a[:5] + zones_mean[int(a[7])] + a[5:7] + zones_mean[int(a[8])] + a[9:])
+        taxi_data = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0).map(lambda a: a[:5] + zones_mean[int(a[7])] + a[5:7] + zones_mean[int(a[8])] + a[9:])
 
     if oldTypeFiles and newTypeFiles:
         csvfile2 = sc.textFile(newTypeFiles)
         header2 = csvfile2.first()
-        csvfile2 = csvfile2.filter(lambda line : line != header2)
+        csvfile2 = csvfile2.filter(lambda line : line != header2).filter(lambda line: 'endor' not in line)
         # taxi_data.map(lambda t: map(float,t[5:7]))
         
         ## Assign GPS coordinates to each place
         zones_mean = pickle.load(open('zones_mean.pickle','r'))
-        taxi_data2 = csvfile2.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x)!=0).map(lambda a: a[:5] + zones_mean[int(a[7])] + a[5:7] + zones_mean[int(a[8])] + a[9:])
+        taxi_data2 = csvfile2.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0).map(lambda a: a[:5] + zones_mean[int(a[7])] + a[5:7] + zones_mean[int(a[8])] + a[9:])
         taxi_data = taxi_data.union(taxi_data2)
 
     ## Convert VendorID
@@ -83,7 +83,7 @@ def readFiles2 (year_months_dic,sc):
         elif x[i] == 'VTS': x[i]=2
         return x
 
-    taxi_data.map(convertVendorInt) # There are 1 empty array for each file. So lets remove them.   
+    taxi_data.filter(lambda x: len(x)!=0).map(convertVendorInt) # There are 1 empty array for each file. So lets remove them.   
 	## Convert Payment type
     def convertPaymentTypeInt(x):
         i = _fieldsDic['payment_type']
@@ -95,7 +95,16 @@ def readFiles2 (year_months_dic,sc):
         return x
 		
     taxi_data = taxi_data.map(convertVendorInt).map(convertPaymentTypeInt).filter(lambda x: len(x)!=0) # There are 1 empty array for each file. So lets remove them.   
-
+    
+    def correctLengthOfFields(x):
+	i = _fieldsDic['improvement_surcharge']
+	if len(x) == 18: 
+		temp = x[i]
+		x[i] = 0
+		x.append(temp)		
+	return x
+		 
+    taxi_data = taxi_data.map(correctLengthOfFields)	
     if "yellow" in oldTypeFiles + newTypeFiles:
         return (taxi_data,"yellow")
     else:
