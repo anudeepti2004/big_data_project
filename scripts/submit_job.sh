@@ -13,3 +13,4 @@ for i in "${array[@]}"
 do
 	hadoop fs -getmerge "$i"_valid.out "$i"_valid.out
 done
+hadoop fs -rm -r -f *.out
