@@ -48,14 +48,14 @@ def readFiles2 (year_months_dic,sc):
 
     oldTypeFiles = ','.join(old_type)
     newTypeFiles = ','.join(new_type)
-	zones_mean = pickle.load(open('zones_mean.pickle','r'))
+    zones_mean = pickle.load(open('zones_mean.pickle','r'))
     def getCoord(i):
-    	if i<=263:
-    		return zones_mean[i-1]
-    	elif i==264 or i==265:
-    		return ['NULL','NULL']
-    	else:
-    		raise Exception('Error: %d' % i)
+        if i<=263:
+            return zones_mean[i-1]
+        elif i==264 or i==265:
+            return ['NULL','NULL']
+        else:
+            raise Exception('Error: %d' % i)
 
     if oldTypeFiles:
         csvfile = sc.textFile(oldTypeFiles)
@@ -78,7 +78,6 @@ def readFiles2 (year_months_dic,sc):
         # taxi_data.map(lambda t: map(float,t[5:7]))
         
         ## Assign GPS coordinates to each place
-        zones_mean = pickle.load(open('zones_mean.pickle','r'))
         taxi_data = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0).map(lambda a: a[:5] + getCoord(int(a[7])) + a[5:7] + getCoord(int(a[8])) + a[9:])
         taxi_data = taxi_data.union(taxi_data2)
 
@@ -90,27 +89,27 @@ def readFiles2 (year_months_dic,sc):
         return x
 
     taxi_data.filter(lambda x: len(x)!=0).map(convertVendorInt) # There are 1 empty array for each file. So lets remove them.   
-	## Convert Payment type
+    ## Convert Payment type
     def convertPaymentTypeInt(x):
         i = _fieldsDic['payment_type']
         if x[i] == 'CRD': x[i]=1
         elif x[i] == 'CSH': x[i]=2
-	elif x[i] == 'NOC': x[i]=3
-	elif x[i] == 'DIS': x[i]=4
-	elif x[i] == 'UNK': x[i]=5
+        elif x[i] == 'NOC': x[i]=3
+        elif x[i] == 'DIS': x[i]=4
+        elif x[i] == 'UNK': x[i]=5
         return x
-		
+        
     taxi_data = taxi_data.map(convertVendorInt).map(convertPaymentTypeInt).filter(lambda x: len(x)!=0) # There are 1 empty array for each file. So lets remove them.   
     
     def correctLengthOfFields(x):
-	i = _fieldsDic['improvement_surcharge']
-	if len(x) == 18: 
-		temp = x[i]
-		x[i] = 0
-		x.append(temp)		
-	return x
-		 
-    taxi_data = taxi_data.map(correctLengthOfFields)	
+        i = _fieldsDic['improvement_surcharge']
+        if len(x) == 18: 
+            temp = x[i]
+            x[i] = 0
+            x.append(temp)      
+        return x
+         
+    taxi_data = taxi_data.map(correctLengthOfFields)    
     if "yellow" in oldTypeFiles + newTypeFiles:
         return (taxi_data,"yellow")
     else:
@@ -148,11 +147,11 @@ def getConverterFunc():
     return lambda t: mapper.convert(t)
 
 def checkValid(f,range):
-	    try:
-	        ff = float(f)
-	        if  range[1] >f > range[0]:
-	            return "Valid"
-	        else:
-	            return "Invalid_NotNYC"
-	    except ValueError:
-	        return "Invalid_NotFloat"
+    try:
+        ff = float(f)
+        if  range[1] >f > range[0]:
+            return "Valid"
+        else:
+            return "Invalid_NotNYC"
+    except ValueError:
+        return "Invalid_NotFloat"
