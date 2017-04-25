@@ -64,22 +64,19 @@ def readFiles2 (year_months_dic,sc):
         # taxi_data.map(lambda t: map(float,t[5:7]))
     
         taxi_data = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0)
+        if newTypeFiles:
+            csvfile2 = sc.textFile(newTypeFiles)
+            header2 = csvfile2.first()
+            csvfile2 = csvfile2.filter(lambda line : line != header2).filter(lambda line: 'endor' not in line)
+            taxi_data2 = csvfile2.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0).map(lambda a: a[:5] + getCoord(int(a[7])) + a[5:7] + getCoord(int(a[8])) + a[9:])
+            taxi_data = taxi_data.union(taxi_data2)
     else:
         csvfile = sc.textFile(newTypeFiles)
         header = csvfile.first()
         csvfile = csvfile.filter(lambda line : line != header).filter(lambda line: 'endor' not in line)
-        # taxi_data.map(lambda t: map(float,t[5:7]))
         taxi_data = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0).map(lambda a: a[:5] + getCoord(int(a[7])) + a[5:7] + getCoord(int(a[8])) + a[9:])
 
-    if oldTypeFiles and newTypeFiles:
-        csvfile2 = sc.textFile(newTypeFiles)
-        header2 = csvfile2.first()
-        csvfile2 = csvfile2.filter(lambda line : line != header2).filter(lambda line: 'endor' not in line)
-        # taxi_data.map(lambda t: map(float,t[5:7]))
         
-        ## Assign GPS coordinates to each place
-        taxi_data2 = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0).map(lambda a: a[:5] + getCoord(int(a[7])) + a[5:7] + getCoord(int(a[8])) + a[9:])
-        taxi_data = taxi_data.union(taxi_data2)
 
     ## Convert VendorID
     def convertVendorInt(x):
