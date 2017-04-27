@@ -166,6 +166,37 @@ def checkLatitude(f):
     except ValueError:
         return "Invalid_NotFloat"
 
+def checkPickupAndDropoffDate(pickupdate, dropoffdate):
+	pickupdate_date = datetime.datetime.strptime(pickupdate, '%Y-%m-%d %H:%M:%S')
+	dropoffdate_date = datetime.datetime.strptime(dropoffdate, '%Y-%m-%d %H:%M:%S')
+	if dropoffdate_date > pickupdate_date:
+		return "Valid"
+	elif dropoffdate_date == pickupdate_date:
+		return "Valid_butEqual"
+	else:
+		return "Invalid"
+
+def checkTotalFareVsFareAmount(fare_amount, total_fare):
+	ff_fare_amount = float(fare_amount)
+	ff_total_amount = float(total_fare)
+	if ff_fare_amount < ff_total_amount:
+		return "Valid"
+	elif ff_fare_amount == ff_total_amount:
+		return "Valid_butEqual"
+	else:
+		return "Invalid"
+
+def checkGPS_TripDistance(pickup_long, pickup_lat, dropoff_long, dropoff_lat, trip_distance):
+	ff_pickup_long = float(pickup_long)
+	ff_pickup_lat = float(pickup_lat)
+	ff_dropoff_long = float(dropoff_long)
+	ff_dropoff_lat = float(dropoff_lat)
+	ff_trip_distance = float(trip_distance)
+	if ff_trip_distance > 0 and ff_pickup_long == ff_dropoff_long and ff_pickup_lat == ff_dropoff_lat:
+		return "Invalid"
+	else:
+		return "Valid"
+
 def getAllValidationFunctions():
     #['VendorID', 'tpep_pickup_datetime', 'tpep_dropoff_datetime', 'passenger_count', 'trip_distance', 'pickup_longitude', 'pickup_latitude', 'RatecodeID', 'store_and_fwd_flag', 'dropoff_longitude', 'dropoff_latitude', 'payment_type', 'fare_amount', 'extra', 'mta_tax', 'tip_amount', 'tolls_amount', 'improvement_surcharge', 'total_amount']
     d = {}
