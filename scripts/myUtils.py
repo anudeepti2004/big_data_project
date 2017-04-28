@@ -48,7 +48,7 @@ def readFiles2 (year_months_dic,sc):
 
     oldTypeFiles = ','.join(old_type)
     newTypeFiles = ','.join(new_type)
-    zones_mean = pickle.load(open('zones_mean.pickle','r'))
+    zones_mean = pickle.load(open('zones_mean.pickle','rb'))
     def getCoord(i):
         if i<=263:
             return zones_mean[i-1]
@@ -75,6 +75,8 @@ def readFiles2 (year_months_dic,sc):
         header = csvfile.first()
         csvfile = csvfile.filter(lambda line : line != header).filter(lambda line: 'endor' not in line)
         taxi_data = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0).map(lambda a: a[:5] + getCoord(int(a[7])) + a[5:7] + getCoord(int(a[8])) + a[9:])
+
+        
 
     ## Convert VendorID
     def convertVendorInt(x):
@@ -150,3 +152,23 @@ def checkValid(f,range):
             return "Invalid_NotNYC"
     except ValueError:
         return "Invalid_NotFloat"
+
+_weather_fields = ['stn', 'wban', 'date', 'temp', 'temp_count', 'DEWP', 'DEWP_count', 'SLP', 'SLP_count', 'STP', 'STP_count', 'VISIB', 'VISIB_count', 'windspeed', 'windspeed_count', 'maxspeed', 'gust', 'max_temp', 'min_temp','precipitation','snow_depth','FRSHTT']
+_weather_fieldsDic = dict((_weather_fields[i],i) for i in range(len(_weather_fields)))
+_weather_fieldsDic.update(dict((i,_weather_fields[i]) for i in range(len(_weather_fields))))
+
+
+final_weather_fields = ['date','temp','windspeed','maxspeed','gust','max_temp','min_temp','precipitation','snow_depth','FRSHTT']
+final_weather_fieldsDic = dict((final_weather_fields[i],i) for i in range(len(final_weather_fields)))
+final_weather_fieldsDic.update(dict((i,final_weather_fields[i]) for i in range(len(final_weather_fields))))
+
+def readWeatherData(sc):
+    file_path = '/user/dv697/data/weather_data_2013-2016.csv'
+    csvfile = sc.textFile(file_path)
+    header = csvfile.first()
+    csvfile = csvfile.filter(lambda line : line != header)
+    weather_data = csvfile.mapPartitions(lambda x: reader(x)).map(lambda x: (x[_weather_fieldsDic['date']].strip(),x[_weather_fieldsDic['temp']].strip(),x[_weather_fieldsDic['windspeed']].strip(),x[_weather_fieldsDic['maxspeed']].strip(),x[_weather_fieldsDic['gust']].strip(),x[_weather_fieldsDic['max_temp']].strip(),x[_weather_fieldsDic['min_temp']].strip(),x[_weather_fieldsDic['precipitation']].strip(),x[_weather_fieldsDic['snow_depth']].strip(),x[_weather_fieldsDic['FRSHTT']].strip()))
+    return weather_data
+
+	
+
