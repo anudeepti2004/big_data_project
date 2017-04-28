@@ -79,19 +79,19 @@ def readFiles2 (year_months_dic,sc):
     ## Convert VendorID
     def convertVendorInt(x):
         i = _fieldsDic['VendorID']
-        if x[i] == 'CMT': x[i]="1"
-        elif x[i] == 'VTS': x[i]="2"
+        if x[i] == 'CMT': x[i]=1
+        elif x[i] == 'VTS': x[i]=2
         return x
 
     taxi_data.filter(lambda x: len(x)!=0).map(convertVendorInt) # There are 1 empty array for each file. So lets remove them.   
     ## Convert Payment type
     def convertPaymentTypeInt(x):
         i = _fieldsDic['payment_type']
-        if x[i] == 'CRD': x[i]="1"
-        elif x[i] == 'CSH': x[i]="2"
-        elif x[i] == 'NOC': x[i]="3"
-        elif x[i] == 'DIS': x[i]="4"
-        elif x[i] == 'UNK': x[i]="5"
+        if x[i] == 'CRD': x[i]=1
+        elif x[i] == 'CSH': x[i]=2
+        elif x[i] == 'NOC': x[i]=3
+        elif x[i] == 'DIS': x[i]=4
+        elif x[i] == 'UNK': x[i]=5
         return x
         
     taxi_data = taxi_data.map(convertVendorInt).map(convertPaymentTypeInt).filter(lambda x: len(x)!=0) # There are 1 empty array for each file. So lets remove them.   
@@ -150,3 +150,15 @@ def checkValid(f,range):
             return "Invalid_NotNYC"
     except ValueError:
         return "Invalid_NotFloat"
+def createBox(c_tuple,x_lim,y_lim):
+# tuple of floats c_tuple,new_point as (lon,lat)
+    return ((c_tuple[0]-x_lim,c_tuple[1]-y_lim),(c_tuple[0]+x_lim,c_tuple[1]+y_lim))
+
+def filterTheBox(data,box,c_lon,c_lat):
+    pickups = data.map(lambda a: map(float,[a[c_lon],a[c_lat]]))
+    def filterBox(dd,box):
+        for i in range(len(dd)):
+            if not(box[0][i]<dd[i]<box[1][i]):
+                return False
+        return True
+    return filtered_by_pickup =  pickups.filter(lambda a: filterBox(a,box))
