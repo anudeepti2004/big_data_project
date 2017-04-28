@@ -76,8 +76,6 @@ def readFiles2 (year_months_dic,sc):
         csvfile = csvfile.filter(lambda line : line != header).filter(lambda line: 'endor' not in line)
         taxi_data = csvfile.mapPartitions(lambda x: reader(x)).filter(lambda x: len(x) != 0).map(lambda a: a[:5] + getCoord(int(a[7])) + a[5:7] + getCoord(int(a[8])) + a[9:])
 
-        
-
     ## Convert VendorID
     def convertVendorInt(x):
         i = _fieldsDic['VendorID']
