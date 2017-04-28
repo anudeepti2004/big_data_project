@@ -12,15 +12,13 @@ with open('theaters.csv','r') as f:
         name = aa[1]
         theaters[name] = coor
 
-p_lon = my._fieldsDic['pickup_longitude']
-p_lat = my._fieldsDic['pickup_latitude']
-
 
 LON_LIM = 0.002
 LAT_LIM = 0.0012 
+
 ven = theaters['Broadway Theatre']
 box = my.createBox(ven,LON_LIM,LAT_LIM)
-filtered = filterTheBox(data,box,p_lon,p_lat)
+filtered = my.filterTheBox(data,box,'pickup_longitude','pickup_latitude')
 
     
 

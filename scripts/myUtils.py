@@ -157,7 +157,9 @@ def createBox(c_tuple,x_lim,y_lim):
     return ((c_tuple[0]-x_lim,c_tuple[1]-y_lim),(c_tuple[0]+x_lim,c_tuple[1]+y_lim))
 
 def filterTheBox(data,box,c_lon,c_lat):
-    pickups = data.map(lambda a: map(float,[a[c_lon],a[c_lat]]))
+    p_lon = my._fieldsDic[c_lon]
+    p_lat = my._fieldsDic[c_lat]
+    pickups = data.map(lambda a: map(float,[a[p_lon],a[p_lat]]))
     def filterBox(dd,box):
         for i in range(len(dd)):
             if not(box[0][i]<dd[i]<box[1][i]):
