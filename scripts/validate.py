@@ -15,7 +15,11 @@ sc.addPyFile("myUtils.py")
 sc.addPyFile("validation_utils.py")
 
 fields = getFieldDic()
+<<<<<<< HEAD
 (taxi_data,prefix) = readAllFiles(sc)
+=======
+(taxi_data,prefix) = readFiles2({2016:range(1,13),2015:range(1,13),2014:range(1,13),2013:range(1,13)},sc)  #readAllFiles(sc)
+>>>>>>> 26e48c81a9c6de84e728e49be49f746f2d40b8dd
 
 # VendorID
 vendorID = taxi_data.map(lambda entry: (checkVendorIDValid(entry[fields['VendorID']]),1)).reduceByKey(lambda x,y: x+y)
