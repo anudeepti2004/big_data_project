@@ -19,6 +19,9 @@ def createBox(c_tuple,x_lim,y_lim):
 # tuple of floats c_tuple,new_point as (lon,lat)
     box = ((c_tuple[0]-x_lim,c_tuple[1]-y_lim),(c_tuple[0]+x_lim,c_tuple[1]+y_lim))
     def filterBox(dd):
+        def reset(percent=50):
+            return random.randrange(100) < percent
+        if reset(5): print(dd)
         for i in range(len(dd)):
             if not(box[0][i]<dd[i]<box[1][i]):
                 return False
