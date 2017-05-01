@@ -4,6 +4,7 @@ import sys
 from operator import add
 from csv import reader
 import pickle
+import validation_utils as va
 
 
 # d = getFieldDic() and then you can call d[4] and it returns 'trip_distance' OR the other way around d['trip_distance']=4.
