@@ -19,10 +19,10 @@ def createBox(c_tuple,x_lim,y_lim):
 # tuple of floats c_tuple,new_point as (lon,lat)
     box = ((c_tuple[0]-x_lim,c_tuple[1]-y_lim),(c_tuple[0]+x_lim,c_tuple[1]+y_lim))
     def filterBox(dd):
-            for i in range(len(dd)):
-                if not(box[0][i]<dd[i]<box[1][i]):
-                    return False
-            return True
+        for i in range(len(dd)):
+            if not(box[0][i]<dd[i]<box[1][i]):
+                return False
+        return True
     return filterBox
 
 def filterTheBox(data,filterBox,c_lon,c_lat):
