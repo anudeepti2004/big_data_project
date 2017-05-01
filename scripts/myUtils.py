@@ -153,6 +153,14 @@ def checkValid(f,range):
     except ValueError:
         return "Invalid_NotFloat"
 
+def cleanByFields(data,fields)
+    #fields: array of strings ['pickup_longitude','pickup_latitude']
+    t=data
+    for f in fields:
+        i = my._fieldsDic[f]
+        t = t.filter(lambda e: va.checkLongitude(e[i]).startswith('Valid'))
+    return t
+    
 
 _weather_fields = ['stn', 'wban', 'date', 'temp', 'temp_count', 'DEWP', 'DEWP_count', 'SLP', 'SLP_count', 'STP', 'STP_count', 'VISIB', 'VISIB_count', 'windspeed', 'windspeed_count', 'maxspeed', 'gust', 'max_temp', 'min_temp','precipitation','snow_depth','FRSHTT']
 _weather_fieldsDic = dict((_weather_fields[i],i) for i in range(len(_weather_fields)))

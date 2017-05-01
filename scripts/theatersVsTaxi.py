@@ -1,6 +1,5 @@
 import myUtils as my
 import spatialUtils as sp
-import re
 data,flag = my.readAllFiles(sc)
 my._fieldsDic['tpep_pickup_datetime']
 
@@ -12,7 +11,7 @@ LAT_LIM = 0.0012
 
 ven = theaters['Broadway Theatre']
 box_fun = sp.createBox(ven,LON_LIM,LAT_LIM)
-filtered = sp.filterTheBox(data,box,'pickup_longitude','pickup_latitude')
+filtered = sp.filterTheBox(data,box_fun,'pickup_longitude','pickup_latitude')
 
     
 
