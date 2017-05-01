@@ -1,9 +1,9 @@
 from __future__ import print_function
 import sys
-
+import myUtils
+import re
 
 def loadNYCtheaters():
-    import re
     theaters = {}
     with open('theaters.csv','r') as f:
         f.next()
@@ -26,7 +26,7 @@ def createBox(c_tuple,x_lim,y_lim):
     return filterBox
 
 def filterTheBox(data,filterBox,c_lon,c_lat):
-    p_lon = my._fieldsDic[c_lon]
-    p_lat = my._fieldsDic[c_lat]
+    p_lon = myUtils._fieldsDic[c_lon]
+    p_lat = myUtils._fieldsDic[c_lat]
     pickups = data.map(lambda a: map(float,[a[p_lon],a[p_lat]]))
     return pickups.filter(lambda a: filterBox(a))
