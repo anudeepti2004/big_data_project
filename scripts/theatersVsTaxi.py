@@ -1,7 +1,7 @@
-import myUtils as my
-import spatialUtils as sp
 from pyspark import SparkContext
 sc=SparkContext()
+import myUtils as my
+import spatialUtils as sp
 sc.addPyFile("myUtils.py")
 sc.addPyFile("validation_utils.py")
 sc.addPyFile("spatialUtils.py")
@@ -17,6 +17,6 @@ box_fun = sp.createBox(ven,LON_LIM,LAT_LIM)
 pickup_cleaned = my.cleanByFields(data,['pickup_longitude','pickup_latitude'])
 filtered = sp.filterTheBox(pickup_cleaned,box_fun,'pickup_longitude','pickup_latitude')
 with open('new_test.out','wb') as f:
-	f.write('heyoh\n')
-	f.write(str(filtered.count()))
-filtered.saveAsTextFile('broadway.out')
+	f.write('Counts\n')
+	f.write('count: '+str(filtered.count())+'\n')
+#filtered.saveAsTextFile('broadway.out')
