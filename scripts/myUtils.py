@@ -157,7 +157,7 @@ def cleanByFields(data,fields):
     #fields: array of strings ['pickup_longitude','pickup_latitude']
     t=data
     for f in fields:
-        i = my._fieldsDic[f]
+        i = _fieldsDic[f]
         t = t.filter(lambda e: va.checkLongitude(e[i]).startswith('Valid'))
     return t
 
