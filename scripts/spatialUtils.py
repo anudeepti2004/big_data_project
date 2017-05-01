@@ -1,7 +1,7 @@
 from __future__ import print_function
 import sys
 import myUtils
-import re 
+import re,random 
 
 def loadNYCtheaters():
     theaters = {}
