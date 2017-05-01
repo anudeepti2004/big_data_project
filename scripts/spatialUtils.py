@@ -28,5 +28,5 @@ def createBox(c_tuple,x_lim,y_lim):
 def filterTheBox(data,filterBox,c_lon,c_lat):
     p_lon = myUtils._fieldsDic[c_lon]
     p_lat = myUtils._fieldsDic[c_lat]
-    pickups = data.map(lambda a: map(float,[a[p_lon],a[p_lat]]))
-    return pickups.filter(lambda a: filterBox(a))
+    filter_fun=lambda a: filterBox(map(float,[a[p_lon],a[p_lat]]))
+    return data.filter(filter_fun)
