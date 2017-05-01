@@ -4,16 +4,16 @@ import sys
 
 def loadNYCtheaters():
     import re
-	theaters = {}
-	with open('theaters.csv','r') as f:
-	    f.next()
-	    for l in f: 
-	        aa = l.split(',')
-	        coor = map(float,filter(lambda x: len(x)>0,re.split('[^\d.-]+',aa[0])))
-	        name = aa[1]
-	        theaters[name] = coor
+    theaters = {}
+    with open('theaters.csv','r') as f:
+        f.next()
+        for l in f: 
+            aa = l.split(',')
+            coor = map(float,filter(lambda x: len(x)>0,re.split('[^\d.-]+',aa[0])))
+            name = aa[1]
+            theaters[name] = coor
 
-	return theaters
+    return theaters
 
 def createBox(c_tuple,x_lim,y_lim):
 # tuple of floats c_tuple,new_point as (lon,lat)
