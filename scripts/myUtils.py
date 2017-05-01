@@ -154,18 +154,19 @@ def checkValid(f,range):
         return "Invalid_NotFloat"
 def createBox(c_tuple,x_lim,y_lim):
 # tuple of floats c_tuple,new_point as (lon,lat)
-    return ((c_tuple[0]-x_lim,c_tuple[1]-y_lim),(c_tuple[0]+x_lim,c_tuple[1]+y_lim))
+    box = ((c_tuple[0]-x_lim,c_tuple[1]-y_lim),(c_tuple[0]+x_lim,c_tuple[1]+y_lim))
+    def filterBox(dd):
+            for i in range(len(dd)):
+                if not(box[0][i]<dd[i]<box[1][i]):
+                    return False
+            return True
+    return filterBox
 
-def filterTheBox(data,box,c_lon,c_lat):
+def filterTheBox(data,filterBox,c_lon,c_lat):
     p_lon = my._fieldsDic[c_lon]
     p_lat = my._fieldsDic[c_lat]
     pickups = data.map(lambda a: map(float,[a[p_lon],a[p_lat]]))
-    def filterBox(dd,box):
-        for i in range(len(dd)):
-            if not(box[0][i]<dd[i]<box[1][i]):
-                return False
-        return True
-    return filtered_by_pickup =  pickups.filter(lambda a: filterBox(a,box))
+    return pickups.filter(lambda a: filterBox(a))
 
 _weather_fields = ['stn', 'wban', 'date', 'temp', 'temp_count', 'DEWP', 'DEWP_count', 'SLP', 'SLP_count', 'STP', 'STP_count', 'VISIB', 'VISIB_count', 'windspeed', 'windspeed_count', 'maxspeed', 'gust', 'max_temp', 'min_temp','precipitation','snow_depth','FRSHTT']
 _weather_fieldsDic = dict((_weather_fields[i],i) for i in range(len(_weather_fields)))
