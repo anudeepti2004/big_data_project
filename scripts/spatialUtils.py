@@ -3,6 +3,7 @@ import sys
 
 
 def loadNYCtheaters():
+    import re
 	theaters = {}
 	with open('theaters.csv','r') as f:
 	    f.next()
