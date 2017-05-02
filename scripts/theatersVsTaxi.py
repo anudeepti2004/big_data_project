@@ -16,6 +16,10 @@ box_fun = sp.createBox(ven,LON_LIM,LAT_LIM)
 
 pickup_cleaned = my.cleanByFields(data,['pickup_longitude','pickup_latitude'])
 filtered = sp.filterTheBox(pickup_cleaned,box_fun,'pickup_longitude','pickup_latitude')
+agg_data=aggregateOnDateTime(data,datetime_col='tpep_pickup_datetime',
+								row_fun =lambda x:1,months={'all_months':range(12)},
+								days={'all_days':range(7)},
+								hours={'all_hours':range(24)}).reduceByKey(lambda x,y: x+y)
 with open('new_test.out','wb') as f:
 	f.write('Counts\n')
 	f.write('count: '+str(filtered.count())+'\n')
