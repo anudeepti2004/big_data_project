@@ -164,6 +164,21 @@ def cleanByFields(data,fields):
         t = t.filter(lambda e: funi(e[i]).startswith('Valid'))
     return t
 
+def aggregateOnDateTime(data,datetime_col='tpep_pickup_datetime',row_fun =lambda x:1,months={'all_months':range(12)},days={'all_days':range(7)},hours={'all_hours':range(24)}):
+    reverse_dic={}
+    for mk,mv in months.items():
+        for m in mv:
+            for dk,dv in days.items():
+                for d in dv:
+                    for hk,hv in hours.items():
+                        for h in hv:
+                            reverse_dic[(m,d,h)]=(mk,dk,hk)
+    def aggFun(a):
+        dt = datetime.datetime.strptime(a[i], '%Y-%m-%d %H:%M:%S')
+        key = reverse_dic[dt.month,dt.weekday(),dt.hour]
+        return(key,row_fun(a))
+    return data.map(aggFun)
+
 
 _weather_fields = ['stn', 'wban', 'date', 'temp', 'temp_count', 'DEWP', 'DEWP_count', 'SLP', 'SLP_count', 'STP', 'STP_count', 'VISIB', 'VISIB_count', 'windspeed', 'windspeed_count', 'maxspeed', 'gust', 'max_temp', 'min_temp','precipitation','snow_depth','FRSHTT']
 _weather_fieldsDic = dict((_weather_fields[i],i) for i in range(len(_weather_fields)))
