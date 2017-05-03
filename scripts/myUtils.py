@@ -6,7 +6,6 @@ from csv import reader
 import pickle
 import validation_utils as va
 
-
 # d = getFieldDic() and then you can call d[4] and it returns 'trip_distance' OR the other way around d['trip_distance']=4.
 _fields = ['VendorID', 'tpep_pickup_datetime', 'tpep_dropoff_datetime', 'passenger_count', 'trip_distance', 'pickup_longitude', 'pickup_latitude', 'RatecodeID', 'store_and_fwd_flag', 'dropoff_longitude', 'dropoff_latitude', 'payment_type', 'fare_amount', 'extra', 'mta_tax', 'tip_amount', 'tolls_amount', 'improvement_surcharge', 'total_amount']
 _fieldsDic = dict((_fields[i],i) for i in range(len(_fields)))
@@ -175,7 +174,7 @@ def aggregateOnDateTime(data,datetime_col='tpep_pickup_datetime',row_fun =lambda
                             reverse_dic[(m,d,h)]=(mk,dk,hk)
     def aggFun(a):
         from datetime import datetime
-        dt = datetime.datetime.strptime(a[i], '%Y-%m-%d %H:%M:%S')
+        dt = datetime.strptime(a[1], '%Y-%m-%d %H:%M:%S')
         key = reverse_dic[dt.month,dt.weekday(),dt.hour]
         return(key,row_fun(a))
     return data.map(aggFun)
