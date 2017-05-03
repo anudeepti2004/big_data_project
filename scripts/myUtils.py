@@ -5,6 +5,7 @@ from operator import add
 from csv import reader
 import pickle
 import validation_utils as va
+import datetime
 
 
 # d = getFieldDic() and then you can call d[4] and it returns 'trip_distance' OR the other way around d['trip_distance']=4.
@@ -174,7 +175,7 @@ def aggregateOnDateTime(data,datetime_col='tpep_pickup_datetime',row_fun =lambda
                         for h in hv:
                             reverse_dic[(m,d,h)]=(mk,dk,hk)
     def aggFun(a):
-        dt = datetime.datetime.strptime(a[i], '%Y-%m-%d %H:%M:%S')
+        dt = datetime.datetime.strptime(a[1], '%Y-%m-%d %H:%M:%S')
         key = reverse_dic[dt.month,dt.weekday(),dt.hour]
         return(key,row_fun(a))
     return data.map(aggFun)
