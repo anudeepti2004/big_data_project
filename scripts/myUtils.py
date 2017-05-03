@@ -163,7 +163,7 @@ def cleanByFields(data,fields):
         t = t.filter(lambda e: funi(e[i]).startswith('Valid'))
     return t
 
-def aggregateOnDateTime(data,datetime_col='tpep_pickup_datetime',row_fun =lambda x:1,months={'all_months':range(12)},days={'all_days':range(7)},hours={'all_hours':range(24)}):
+def aggregateOnDateTime(data,datetime_col='tpep_pickup_datetime',row_fun =lambda x:1,months={'all_months':range(1,13)},days={'all_days':range(7)},hours={'all_hours':range(24)}):
     reverse_dic={}
     for mk,mv in months.items():
         for m in mv:
