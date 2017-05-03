@@ -174,6 +174,7 @@ def aggregateOnDateTime(data,datetime_col='tpep_pickup_datetime',row_fun =lambda
                         for h in hv:
                             reverse_dic[(m,d,h)]=(mk,dk,hk)
     def aggFun(a):
+        from datetime import datetime
         dt = datetime.datetime.strptime(a[i], '%Y-%m-%d %H:%M:%S')
         key = reverse_dic[dt.month,dt.weekday(),dt.hour]
         return(key,row_fun(a))
