@@ -10,18 +10,18 @@ import datetime
 
 
 def checkValid(date_text):
-                if date_text is not None:
-                        try:
-                                given_date = datetime.datetime.strptime(date_text, '%Y-%m-%d %H:%M:%S')
-                                year = given_date.year
-                                if year >= 2013 and year <= 2016:
-                                        return (str(given_date.date()),"Valid")
-                                else:
-                                        return (str(given_date.date()),"Invalid_year")
-                        except ValueError:
-                                return (date_text,"Invalid_date")
-                else:
-                        return (date_text,"Invalid_Null_date")
+    if date_text is not None:
+        try:
+            given_date = datetime.datetime.strptime(date_text, '%Y-%m-%d %H:%M:%S')
+            year = given_date.year
+            if year >= 2013 and year <= 2016:
+                return (str(given_date.date()),"Valid")
+            else:
+                return (str(given_date.date()),"Invalid_year")
+        except ValueError:
+            return (date_text,"Invalid_date")
+    else:
+        return (date_text,"Invalid_Null_date")
 
 
 
