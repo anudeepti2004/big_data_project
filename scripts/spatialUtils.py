@@ -47,3 +47,31 @@ def createUnionOfBoxes(c_tuples,x_lim,y_lim):
                 return True
         return False
     return unionFun
+
+def getBarclaysEventDates(f_path='barclays_center_wiki_events.wiki'):
+    lup = {'September':9,
+         'October':10,
+         'December':12,
+         'February':2,
+         'March':3,
+         'November':11,
+         'April':4,
+         'May':5,
+         'June':6,
+         'July':7,
+         'August':8,
+         'January':1}
+    starts=tuple(["| "+k for k in lup.keys()])
+    dates = []
+    with open(f_path,'rb') as f:
+        for l in f:
+            if l.startswith('==='):
+                c_year = int(l.strip().split()[1])
+            elif l.startswith(starts):
+                a = l.strip().split()[1:3]
+                a[1] = ''.join([c for c in a[1] if c.isdigit()])
+                dt = (c_year,int(a[1]),lup[a[0]])
+                dates.append(dt)
+                print(dt)
+
+    return dates

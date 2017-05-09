@@ -7,13 +7,15 @@ sc.addPyFile("myUtils.py")
 sc.addPyFile("validation_utils.py")
 sc.addPyFile("spatialUtils.py")
 
-#### APOLLO
-######################################################
+
 data,flag = my.readAllFiles(sc)
 #data,flag =my.readFiles2(dict((y, [k for k in range(1,2)]) for y in range(2015,2016)),sc)
 theaters = sp.loadNYCtheaters()
 LON_LIM = 0.002
 LAT_LIM = 0.0012 
+
+#### APOLLO
+######################################################
 ven = theaters['Apollo Theater']
 box_fun = sp.createBox(ven,LON_LIM,LAT_LIM)
 
