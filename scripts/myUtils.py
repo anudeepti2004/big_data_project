@@ -14,6 +14,9 @@ _fieldsDic.update(dict((i,_fields[i]) for i in range(len(_fields))))
 def getFieldDic():
     return _fieldsDic
 
+def readAtt(x,field_name):
+    return x[_fieldsDic[field_name]]
+
 def readFiles (files,sc):
     concatenatedFiles = ','.join(files)
     
