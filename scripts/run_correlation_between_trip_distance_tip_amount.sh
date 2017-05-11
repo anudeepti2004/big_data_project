@@ -10,4 +10,4 @@ hadoop fs -rm -r "trip_distance_fare_amount.out"
 # Run
 spark-submit  --driver-memory 3g --executor-memory 3g correlation_between_trip_distance_tip_amount.py > log
 
-hadoop fs -getmerge "trip_distance_fare_amount.out" "tip_amount_fare_amount.out"
+hadoop fs -getmerge "trip_distance_fare_amount.out" "trip_distance_fare_amount.out"
