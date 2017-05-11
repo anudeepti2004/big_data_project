@@ -168,6 +168,7 @@ def cleanByFields(data,fields):
 
 def aggregateOnDateTime(data,datetime_col='tpep_pickup_datetime',row_fun =lambda x:1,months={'all_months':range(1,13)},days={'all_days':range(7)},hours={'all_hours':range(24)}):
     reverse_dic={}
+    i=_fieldsDic[datetime_col]
     for mk,mv in months.items():
         for m in mv:
             for dk,dv in days.items():
@@ -177,7 +178,7 @@ def aggregateOnDateTime(data,datetime_col='tpep_pickup_datetime',row_fun =lambda
                             reverse_dic[(m,d,h)]=(mk,dk,hk)
     def aggFun(a):
         from datetime import datetime
-        dt = datetime.strptime(a[1], '%Y-%m-%d %H:%M:%S')
+        dt = datetime.strptime(a[i], '%Y-%m-%d %H:%M:%S')
         key = reverse_dic[dt.month,dt.weekday(),dt.hour]
         return(key,row_fun(a))
     return data.map(aggFun)
