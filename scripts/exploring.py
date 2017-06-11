@@ -46,7 +46,7 @@ fields = getFieldDic()
 timestart = datetime.datetime.now()
 (taxi_data,prefix) = readFiles2({2016:range(1,13),2015:range(1,13),2014:range(1,13),2013:range(1,13)},sc)
 
-taxi_data = cleanByFields(taxi_data, ['tpep_pickup_datetime'])
+taxi_data = cleanByFields(taxi_data, ['tpep_pickup_datetime', tpep_dropoff_datetime])
 
 taxi_train_df = sqlContext.createDataFrame (taxi_data,('vendorID', 'tpep_pickup_datetime', 'tpep_dropoff_datetime', 'passenger_count', 'trip_distance', 'pickup_longitude', 'pickup_latitude', 'rateCodeID', 'store_and_fwd_flag', 'dropoff_longitude', 'dropoff_latitude', 'payment_type', 'fare_amount','extra','mta_tax','improvement_surcharge','tip_amount','tolls_amount','total_amount'))
 
@@ -56,11 +56,18 @@ def time_delta(pickup, dropoff):
     start = datetime.datetime.strptime(pickup, '%Y-%m-%dT%H:%M:%S.%f')
     delta = (end-start).total_seconds()
     hour = start.hour
-    return delta, hour
+    return delta
+
+def getHour(value):
+    given_date = datetime.datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+    hour = given_date.hour
+    return hour
 
 data_tripTime = udf(time_delta, IntegerType())
-taxi_train_df = taxi_train_df.withColumn("trip_time", data_tripTime(taxi_train_df.tpep_pickup_datetime, taxi_train_df.tpep_dropoff_datetime)[0]) 
-taxi_train_df = taxi_train_df.withColumn("pickup_hour", data_tripTime(taxi_train_df.tpep_pickup_datetime, taxi_train_df.tpep_dropoff_datetime)[1]) 
+taxi_train_df = taxi_train_df.withColumn("trip_time", data_tripTime(taxi_train_df.tpep_pickup_datetime, taxi_train_df.tpep_dropoff_datetime))
+
+data_getHour = udf(getHour, IntegerType())
+taxi_train_df = taxi_train_df.withColumn("pickup_hour", data_getHour(taxi_train_df.tpep_pickup_datetime)) 
 
 '''
 def getHour(value):
@@ -80,7 +87,7 @@ taxi_df_train_cleaned.count()
 
 
 #####
-
+'''
 sqlStatement = """
     SELECT *,
     CASE
@@ -94,18 +101,22 @@ sqlStatement = """
 """
 taxi_df_train_with_newFeatures = sqlContext.sql(sqlStatement)
 
+
+#spark.sql("select store_and_fwd_flag,count(*) from yellow_taxi group by Store_and_fwd_flag")
+#spark.sql("select")
+
 # cache away
 taxi_df_train_with_newFeatures.cache()
 taxi_df_train_with_newFeatures.count()
-
+'''
 
 ## BUILD CATEGORICAL FEATURES ##    
 from pyspark.ml.feature import OneHotEncoder, StringIndexer, VectorAssembler, VectorIndexer
 
-stringIndexer = StringIndexer(inputCol="vendor_id", outputCol="vendor_index")
-model = stringIndexer.fit(taxi_df_train_with_newFeatures) 
+stringIndexer = StringIndexer(inputCol="vendorID", outputCol="vendor_index")
+model = stringIndexer.fit(taxi_df_train_cleaned) 
 
-indexed = model.transform(taxi_df_train_with_newFeatures)
+indexed = model.transform(taxi_df_train_cleaned)
 encoder = OneHotEncoder(dropLast=False, inputCol="vendor_index", outputCol="vendor_vec")
 encoded1 = encoder.transform(indexed)
 
@@ -121,10 +132,12 @@ indexed = model.transform(encoded2)
 encoder = OneHotEncoder(dropLast=False, inputCol="payment_index", outputCol="payment_vec")
 encoded3 = encoder.transform(indexed)
 
+'''
 stringIndexer = StringIndexer(inputCol="trafficTime_bins", outputCol="trafficTime_bins_index")
 model = stringIndexer.fit(encoded3)
 indexed = model.transform(encoded3)
 encoder = OneHotEncoder(dropLast=False, inputCol="trafficTime_bins_index", outputCol="trafficTime_binsvec")
+'''
 encoded = encoder.transform(indexed)
 
 
